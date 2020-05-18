@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button Content="Choose File" HorizontalAlignment="Left" Margin="526,27,0,0" VerticalAlignment="Top" Width="80" Height="23" Click="Button_Click"/>
+        <TextBox HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="23" Margin="144,27,0,0" TextWrapping="Wrap" Text="{Binding FriendlyFileName}" VerticalAlignment="Top" Width="366"/>
+
+        <Border HorizontalAlignment="Left" Margin="144,60,0,0" BorderThickness="1" BorderBrush="Gray"  Height="242" Width="462">
+        <ScrollViewer Height="242" Width="462" >
+            <TextBlock TextWrapping="Wrap" Text="{Binding MainText}" VerticalAlignment="Top" />
+        </ScrollViewer>
+        </Border>
+        <Button Content="Process Book" HorizontalAlignment="Left" Margin="276,88,0,0" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.24,0.3" Click="Button_Click_1"/>
+        <Label Content="select a text or epub file" HorizontalAlignment="Left" Margin="294,50,0,0" VerticalAlignment="Top"/>
+
     </Grid>
 </Window>

@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.779
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wordulator", "Wordulator\Wordulator.csproj", "{7F6A130F-A496-4620-BFB4-77031B801391}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordulatorCore", "WordulatorCore\WordulatorCore.csproj", "{049754B9-D5EA-4D77-8322-CD8648688D63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordulatorTests", "WordulatorTests\WordulatorTests.csproj", "{0AA5F35D-5D02-44ED-836F-14EFF031CA2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7F6A130F-A496-4620-BFB4-77031B801391}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F6A130F-A496-4620-BFB4-77031B801391}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F6A130F-A496-4620-BFB4-77031B801391}.Release|Any CPU.Build.0 = Release|Any CPU
+		{049754B9-D5EA-4D77-8322-CD8648688D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{049754B9-D5EA-4D77-8322-CD8648688D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{049754B9-D5EA-4D77-8322-CD8648688D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{049754B9-D5EA-4D77-8322-CD8648688D63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AA5F35D-5D02-44ED-836F-14EFF031CA2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AA5F35D-5D02-44ED-836F-14EFF031CA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AA5F35D-5D02-44ED-836F-14EFF031CA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AA5F35D-5D02-44ED-836F-14EFF031CA2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
