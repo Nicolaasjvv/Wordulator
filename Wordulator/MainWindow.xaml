@@ -27,7 +27,7 @@
                 </StackPanel>
 
                 <StackPanel Margin="5,0,0,0">
-                    <Label Content="Top 50 Words bigger than 6" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <Label Content="Top 50 Words longer than 6 characters" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
                     <Border HorizontalAlignment="Left" BorderThickness="1" BorderBrush="Gray"  Height="242" Width="252">
                         <ScrollViewer Height="242" Width="252" >
