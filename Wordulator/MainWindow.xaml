@@ -12,7 +12,7 @@
 
         <Border HorizontalAlignment="Left" Margin="144,60,0,0" BorderThickness="1" BorderBrush="Gray"  Height="242" Width="462">
         <ScrollViewer Height="242" Width="462" >
-            <TextBlock TextWrapping="Wrap" Text="{Binding MainText}" VerticalAlignment="Top" />
+            <TextBox TextWrapping="Wrap" Text="{Binding MainText}" VerticalAlignment="Top" BorderThickness="0" />
         </ScrollViewer>
         </Border>
         <Button Content="Process Book" HorizontalAlignment="Left" Margin="276,88,0,0" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.24,0.3" Click="Button_Click_1"/>

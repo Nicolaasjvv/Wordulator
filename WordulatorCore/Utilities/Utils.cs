@@ -37,7 +37,7 @@ namespace WordulatorCore.Utilities
                 // Append to current word.
                 if (wordChar)
                 {
-                    builder.Append(content[i]);
+                    builder.Append(char.ToLowerInvariant(content[i]));
                 }
                 // If we are not on a valid char and only if our builder already has content, end and add the word to the list
                 if ((!wordChar && builder.Length > 0) || i == content.Length - 1)
