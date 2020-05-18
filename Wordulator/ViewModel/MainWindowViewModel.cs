@@ -13,12 +13,18 @@ namespace Wordulator.ViewModel
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private string _activeFilePath, _friendlyFileName, _mainText;
+        private string _activeFilePath, _friendlyFileName, _mainText, _secondaryText;
 
         public string MainText
         {
             get => _mainText;
             set => SetProperty(ref _mainText, value);
+        }
+
+        public string SecondaryText
+        {
+            get => _secondaryText;
+            set => SetProperty(ref _secondaryText, value);
         }
 
         public string FriendlyFileName
@@ -48,29 +54,49 @@ namespace Wordulator.ViewModel
 
             try
             {
-                List<WordCountObject> wordCounts = new List<WordCountObject>();
+                List<WordCountObject> wordCounts = new List<WordCountObject>(), wordCountsBt6 = new List<WordCountObject>();
                 long executionTime = 0;
                 if (Path.GetExtension(ActiveFilePath) == ".txt")
                 {
                     TextfileProcessor txtProc = new TextfileProcessor(ActiveFilePath);
-                    wordCounts = await txtProc.GetTop50WordOccurrences();
-                    executionTime = txtProc.LastProcessTimeMilli;
+                    if (await txtProc.ParseDocument())
+                    {
+                        executionTime = txtProc.LastProcessTimeMilli;
+                        wordCounts = txtProc.GetTop50WordOccurrences();
+                        executionTime += txtProc.LastProcessTimeMilli;
+                        wordCountsBt6 = txtProc.GetTop50WordsBtSix();
+                        executionTime += txtProc.LastProcessTimeMilli;
+                    }
+                    else
+                        MainText = "Can not parse document";
                 }
                 else if (Path.GetExtension(ActiveFilePath) == ".epub")
                 {
-                    MainText = "Epub can not be rendered at this time for processing. For demo please see code method \"CountWords\" ";
+                    MainText = SecondaryText = "Epub can not be rendered at this time for processing. For demo please see code method \"CountWords\" ";
 
                     //epub processing currently has an issue where the webview needed to render and retrieve text is not loading the provided html. 
                     //to see the parsing of the epub in action, comment out the code below and follow the code during debugging, starting with method GetTop50WordOccurrences()
 
-                    // EpubProcessor epubProc = new EpubProcessor(ActiveFilePath);
-                    // wordCounts = await epubProc.GetTop50WordOccurrences();
-                    // executionTime = epubProc.LastProcessTimeMilli;
+                    //EpubProcessor epubProc = new EpubProcessor(ActiveFilePath);
+                    //if (await epubProc.ParseDocument())
+                    //{
+                    //    executionTime = epubProc.LastProcessTimeMilli;
+                    //    wordCounts = epubProc.GetTop50WordOccurrences();
+                    //    executionTime += epubProc.LastProcessTimeMilli;
+                    //    wordCountsBt6 = epubProc.GetTop50WordsBtSix();
+                    //    executionTime += epubProc.LastProcessTimeMilli;
+                    //}
+                    //else
+                    //    MainText = "Can not parse document";
                 }
 
                 if(wordCounts.Any())
                     WriteProcessResultsToMain(wordCounts.Select(x => ValueTuple.Create(x.Word, x.Occurrences)).ToList(),
                         executionTime);
+
+                if(wordCountsBt6.Any())
+                    WriteProcessResultsToSecondary(wordCountsBt6.Select(x => ValueTuple.Create(x.Word, x.Occurrences)).ToList(),
+                        executionTime);                
             }
             catch (Exception ex)
             {
@@ -92,6 +118,20 @@ namespace Wordulator.ViewModel
             sb.AppendLine("--");
             topWords.ForEach(x => sb.AppendLine($"({x.count})  :  {x.word}"));
             MainText = sb.ToString();
+        }
+
+        /// <summary>
+        /// Function to handle formatting and writing of word results to the main output. Using valueTuple decouples from unnecessary dependance on type WordCountObject
+        /// </summary>
+        private void WriteProcessResultsToSecondary(List<(string word, int count)> topWords, long executionTime)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Book Processed in: {executionTime} milliseconds");
+            sb.AppendLine("");
+            sb.AppendLine("(occurrence)  :  word");
+            sb.AppendLine("--");
+            topWords.ForEach(x => sb.AppendLine($"({x.count})  :  {x.word}"));
+            SecondaryText = sb.ToString();
         }
 
         #region Property Changed

@@ -22,40 +22,71 @@ namespace WordulatorCore
         private bool _busyProcessing = false;
         private const int TimeOut = 30000;//timeout for processing to avoid endless situation. Currently 30 seconds
 
+        private List<WordCountObject> _parsedWordCounts;
+
         public long LastProcessTimeMilli { get; internal set; }
 
         public EpubProcessor(string filePath)
         {
+            _parsedWordCounts = new List<WordCountObject>();
             _filePath = filePath;
             _epubService = new EpubService(_filePath);
             _browserService.PageProcessed += HandleBrowserPageProcessed;
         }
 
-        public async Task<List<WordCountObject>> GetTop50WordOccurrences()
+        public async Task<bool> ParseDocument()
         {
             if (string.IsNullOrEmpty(_filePath))
                 throw new FileNotFoundException();
 
+            _parsedWordCounts = new List<WordCountObject>();
+
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-
-            _epubFilePaths = _epubService.GetPagesFromSpine(); //parse the epub and retrieve a list of all the sections / pages in the book.
-                                                               //Each page will then be processed to extract words and count them. For an epub, spine refers to an outline of a book, the same as the spine of a book.
-
-            StartProcessingBook();
-            
-            while (_busyProcessing && stopWatch.ElapsedMilliseconds < TimeOut) //spin while we wait for web process to finish, don't run over timeout
+            try
             {
-                await Task.Delay(2000);
+                _epubFilePaths = _epubService.GetPagesFromSpine(); //parse the epub and retrieve a list of all the sections / pages in the book.
+                //Each page will then be processed to extract words and count them. For an epub, spine refers to an outline of a book, the same as the spine of a book.
+
+                StartProcessingBook();
+
+                while (_busyProcessing && stopWatch.ElapsedMilliseconds < TimeOut) //spin while we wait for web process to finish, don't run over timeout
+                {
+                    await Task.Delay(2000);
+                }
+
+                _parsedWordCounts = _sessionWords.GroupBy(x => x).Select(x => new WordCountObject(x.Key, x.Count())).ToList();
+
+                stopWatch.Stop();
+                LastProcessTimeMilli = stopWatch.ElapsedMilliseconds;
+                return true;
             }
+            catch (Exception e)
+            {
+                stopWatch.Stop();
+                Console.WriteLine(e);
+                return false;
+            }
+        }
 
-            var wordCounts = _sessionWords.GroupBy(x => x).Select(x => new WordCountObject(x.Key, x.Count()));
-            var topWords = wordCounts.Where(x => x.Word.Length > 6).OrderByDescending(x => x.Occurrences).Take(50);
+        public List<WordCountObject> GetTop50WordOccurrences()
+        {
+            var myStopWatch = new Stopwatch();
+            myStopWatch.Start();
+            var returnList = _parsedWordCounts.OrderByDescending(x => x.Occurrences).Take(50).ToList();
+            myStopWatch.Stop();
+            LastProcessTimeMilli = myStopWatch.ElapsedMilliseconds;
+            return returnList;
+        }
 
-            stopWatch.Stop();
-            LastProcessTimeMilli = stopWatch.ElapsedMilliseconds;
-
-            return topWords.ToList();
+        public List<WordCountObject> GetTop50WordsBtSix()
+        {
+            var myStopWatch = new Stopwatch();
+            myStopWatch.Start();
+            var returnList = _parsedWordCounts.Where(x => x.Word.Length > 6).OrderByDescending(x => x.Occurrences).Take(50).ToList();
+            myStopWatch.Stop();
+            LastProcessTimeMilli = myStopWatch.ElapsedMilliseconds;
+            return returnList;
         }
 
 

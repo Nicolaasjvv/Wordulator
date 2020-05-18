@@ -7,16 +7,37 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Choose File" HorizontalAlignment="Left" Margin="526,27,0,0" VerticalAlignment="Top" Width="80" Height="23" Click="Button_Click"/>
-        <TextBox HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="23" Margin="144,27,0,0" TextWrapping="Wrap" Text="{Binding FriendlyFileName}" VerticalAlignment="Top" Width="366"/>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <TextBox Height="23"  TextWrapping="Wrap" Text="{Binding FriendlyFileName}" Width="366"/>
+                <Button Content="Choose File" Margin="10,0,0,0" Width="80" Height="23" Click="Button_Click"/>
+            </StackPanel>
 
-        <Border HorizontalAlignment="Left" Margin="144,60,0,0" BorderThickness="1" BorderBrush="Gray"  Height="242" Width="462">
-        <ScrollViewer Height="242" Width="462" >
-            <TextBox TextWrapping="Wrap" Text="{Binding MainText}" VerticalAlignment="Top" BorderThickness="0" />
-        </ScrollViewer>
-        </Border>
-        <Button Content="Process Book" HorizontalAlignment="Left" Margin="276,88,0,0" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.24,0.3" Click="Button_Click_1"/>
-        <Label Content="select a text or epub file" HorizontalAlignment="Left" Margin="294,50,0,0" VerticalAlignment="Top"/>
+            <Button Content="Process Book" HorizontalAlignment="Center" Margin="0,20,0,0"  VerticalAlignment="Top" Width="180"  Click="Button_Click_1"/>
 
+            <StackPanel Orientation="Horizontal" Margin="0,15,0,10" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                <StackPanel>
+                    <Label Content="Top 50 Words" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            
+                    <Border HorizontalAlignment="Left"  BorderThickness="1" BorderBrush="Gray"  Height="242" Width="252">
+                        <ScrollViewer Height="242" Width="252" >
+                            <TextBox TextWrapping="Wrap" Text="{Binding MainText}" VerticalAlignment="Top" BorderThickness="0" />
+                        </ScrollViewer>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel Margin="5,0,0,0">
+                    <Label Content="Top 50 Words bigger than 6" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                    <Border HorizontalAlignment="Left" BorderThickness="1" BorderBrush="Gray"  Height="242" Width="252">
+                        <ScrollViewer Height="242" Width="252" >
+                            <TextBox TextWrapping="Wrap" Text="{Binding SecondaryText}" VerticalAlignment="Top" BorderThickness="0" />
+                        </ScrollViewer>
+                    </Border>
+                </StackPanel>
+
+
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
